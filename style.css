@@ -1,9 +1,12 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;    
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f4f4f4;
 html{
     /* Keeps a focused field from landing behind the sticky checkout bar */
     scroll-padding-block-end: 110px;
@@ -18,12 +21,67 @@ body{
     color: #0f172a;
 }
 
-header{
-    padding: 20px;
-    display: flex;    
-    background-color: #fff;
+header {
+  padding: 20px;
+  display: flex;
+  background-color: #fff;
 }
 
+.container {
+  width: min(600px, calc(100% - 32px));
+  margin: 0 auto;
+}
+.order-items {
+  border: 2px solid #ccc;
+  width: 100%;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: #fff;
+}
+.items-header,
+.items {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.items {
+  padding-top: 16px;
+  border-top: 1px solid #e5e5e5;
+}
+.items-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.items-info i {
+  color: #555;
+}
+.items-info h3,
+.items-info h4 {
+  margin-bottom: 4px;
+}
+.items-info p,
+.items-list {
+  color: #666;
+  font-size: 14px;
+}
+.items-list {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+@media (max-width: 480px) {
+  .items {
+    align-items: flex-start;
+  }
+  .items-list {
+    font-size: 12px;
+  }
 .container{
     flex: 1;
     width: min(100%, 512px);
