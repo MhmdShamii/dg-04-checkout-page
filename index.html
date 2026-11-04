@@ -116,6 +116,75 @@
         </form>
         <p class="form-status" id="form-status" role="status" hidden></p>
       </section>
+
+      <section class="payment">
+        <div class="payment-option">
+          <div class="payment-header">
+            <h3>Payment Option</h3>
+            <p>Select dummy payment method</p>
+          </div>
+          <div class="payment-methods">
+            <div class="methods">
+              <h4 class="card active">Card(Simulated)</h4>
+              <h4 class="cash">Cash on Delivery</h4>
+            </div>
+            <div class="card-method">
+              <form class="card-form">
+                <div class="card-nb">
+                  <label for="cardnb">Card Number</label>
+                  <input
+                    type="text"
+                    placeholder="4532 &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; 8921 "
+                    id="cardnb"
+                    name="card_number"
+                    inputmode="numeric"
+                    autocomplete="cc-number"
+                    pattern="[0-9 ]+"
+                    aria-describedby="cardnb-error"
+                    required
+                  />
+                  <p class="error-msg" id="cardnb-error" hidden></p>
+                </div>
+                <div class="card-info">
+                  <div class="card-field">
+                    <label for="date">Expiry Date</label>
+                    <input
+                      type="month"
+                      id="date"
+                      name="expiry_date"
+                      autocomplete="cc-exp"
+                      aria-describedby="date-error"
+                      required
+                    />
+                    <p class="error-msg" id="date-error" hidden></p>
+                  </div>
+                  <div class="card-field">
+                    <label for="cvv">CVV</label>
+                    <input
+                      type="text"
+                      placeholder="123"
+                      id="cvv"
+                      name="cvv"
+                      inputmode="numeric"
+                      autocomplete="cc-csc"
+                      pattern="[0-9]{3,4}"
+                      aria-describedby="cvv-error"
+                      required
+                    />
+                    <p class="error-msg" id="cvv-error" hidden></p>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="cash-method">
+              <h4>Pay upon arrival</h4>
+              <p>
+                Please prepare the exact cash total for our courier to ensure
+                quick and contact-safe handover.
+              </p>
+            </div>
+          </div>
+        </div>
       <section class="delivery-method">
         <div class="delivery-header">
           <span class="method-icon">
