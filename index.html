@@ -43,7 +43,7 @@
             <p>Where should we deliver your order?</p>
           </div>
         </div>
-        <form class="delivery-form" id="delivery-form" method="post">
+        <form class="delivery-form" id="delivery-form" method="post" novalidate>
           <div class="field">
             <label for="full-name"
               >Full Name
@@ -129,7 +129,7 @@
               <h4 class="cash">Cash on Delivery</h4>
             </div>
             <div class="card-method">
-              <form class="card-form">
+              <form class="card-form" novalidate>
                 <div class="card-nb">
                   <label for="cardnb">Card Number</label>
                   <input
@@ -201,8 +201,8 @@
             <input
               type="radio"
               name="delivery_method"
+              id="standard-radio"
               value="standard"
-              data-fee="5"
               checked
             />
             <span class="method-top">
@@ -216,8 +216,8 @@
             <input
               type="radio"
               name="delivery_method"
+              id="express-radio"
               value="express"
-              data-fee="10"
             />
             <span class="method-top">
               <span class="method-name">Express</span>

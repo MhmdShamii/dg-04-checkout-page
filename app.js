@@ -31,225 +31,289 @@ const promoCodes = [
   { code: "VIP25", discountPercent: 25 },
 ];
 
+// ---------- Page elements ----------
+
 const result = document.querySelector(".order-items");
 const orderHeader = document.querySelector(".items-header");
+const standardRadio = document.querySelector("#standard-radio");
+const expressRadio = document.querySelector("#express-radio");
+const promoForm = document.querySelector("#promo-form");
+const promoInput = document.querySelector("#promo-code");
+const promoMessage = document.querySelector("#promo-message");
+const form = document.querySelector("#delivery-form");
+const formCard = document.querySelector(".card-form");
+const formStatus = document.querySelector("#form-status");
+const card = document.querySelector(".card");
+const cash = document.querySelector(".cash");
+const cardMethod = document.querySelector(".card-method");
+const cashMethod = document.querySelector(".cash-method");
+
+// ---------- Values that change while the page is open ----------
+
+let appliedPromo = null;
+let paymentMethod = "card";
+
+// ---------- Order items ----------
+
+function calculateTotal() {
+  let total = 0;
+  for (let i = 0; i < items.length; i++) {
+    total = total + items[i].price * items[i].quantity;
+  }
+  return total;
+}
+
+function countItems() {
+  let count = 0;
+  for (let i = 0; i < items.length; i++) {
+    count = count + items[i].quantity;
+  }
+  return count;
+}
 
 function renderSummary() {
   const summary = document.createElement("div");
   summary.className = "items-info";
   summary.innerHTML = `
-
     <i class="fa-solid fa-shopping-cart" aria-hidden="true"></i>
     <div>
       <h3>Order Summary</h3>
       <p>${items.length} items in cart</p>
     </div>
- `;
-
+  `;
   orderHeader.appendChild(summary);
 
   const total = document.createElement("div");
   total.className = "items-list";
-  total.textContent = `Price: $${calculateTotal(items)}`;
+  total.textContent = "Price: $" + calculateTotal().toFixed(2);
   orderHeader.appendChild(total);
 }
-renderSummary();
 
-function calculateTotal(items) {
-  let total = 0;
-  items.forEach((element) => {
-    total += element.price * element.quantity;
-  });
-  return total.toFixed(2);
-}
 function renderOrders() {
-  items.forEach((element) => {
+  for (let i = 0; i < items.length; i++) {
     const order = document.createElement("div");
     order.className = "items";
     order.innerHTML = `
-<div class="items-info">
-               <span>${element.image}</span>
-              <div>
-                <h4>${element.name}</h4>
-                <p>${element.color}&bull; Qty:${element.quantity}</p>
-              </div>
-            </div>
-            <div class="items-list">Price: $${element.price}</div>
-`;
+      <div class="items-info">
+        <span>${items[i].image}</span>
+        <div>
+          <h4>${items[i].name}</h4>
+          <p>${items[i].color}&bull; Qty:${items[i].quantity}</p>
+        </div>
+      </div>
+      <div class="items-list">Price: $${items[i].price}</div>
+    `;
     result.appendChild(order);
-  });
+  }
 }
-renderOrders();
 
-let appliedPromo = null;
+// ---------- Totals ----------
+
+function getDeliveryFee() {
+  if (expressRadio.checked) {
+    return 10;
+  }
+  return 5;
+}
+
+function getDeliveryName() {
+  if (expressRadio.checked) {
+    return "Express";
+  }
+  return "Standard";
+}
 
 function calculateDiscount() {
   if (appliedPromo === null) {
     return 0;
   }
-  return (Number(calculateTotal(items)) * appliedPromo.discountPercent) / 100;
+  return (calculateTotal() * appliedPromo.discountPercent) / 100;
 }
 
 function renderFinalTotal() {
-  const selectedMethod = document.querySelector(
-    'input[name="delivery_method"]:checked',
-  );
-  const subtotal = Number(calculateTotal(items));
+  const subtotal = calculateTotal();
   const discount = calculateDiscount();
-  const fee = Number(selectedMethod.dataset.fee);
+  const fee = getDeliveryFee();
   const finalTotal = subtotal - discount + fee;
 
   document.querySelector(".checkout-total-amount").textContent =
-    `$${finalTotal.toFixed(2)}`;
+    "$" + finalTotal.toFixed(2);
 
-  renderBreakdown(selectedMethod, subtotal, discount, fee, finalTotal);
+  renderBreakdown(subtotal, discount, fee, finalTotal);
 }
 
-function renderBreakdown(selectedMethod, subtotal, discount, fee, finalTotal) {
-  let itemCount = 0;
-  items.forEach((element) => {
-    itemCount += element.quantity;
-  });
-  const itemWord = itemCount === 1 ? "item" : "items";
-  const methodName = selectedMethod
-    .closest(".method-option")
-    .querySelector(".method-name").textContent;
+function renderBreakdown(subtotal, discount, fee, finalTotal) {
+  let itemWord = "items";
+  if (countItems() === 1) {
+    itemWord = "item";
+  }
 
-  document.getElementById("breakdown-subtotal-label").textContent =
-    `Subtotal (${itemCount} ${itemWord})`;
-  document.getElementById("breakdown-subtotal").textContent =
-    `$${subtotal.toFixed(2)}`;
+  document.querySelector("#breakdown-subtotal-label").textContent =
+    "Subtotal (" + countItems() + " " + itemWord + ")";
+  document.querySelector("#breakdown-subtotal").textContent =
+    "$" + subtotal.toFixed(2);
 
-  document.getElementById("breakdown-fee-label").textContent =
-    `Delivery Fee (${methodName})`;
-  document.getElementById("breakdown-fee").textContent = `$${fee.toFixed(2)}`;
+  document.querySelector("#breakdown-fee-label").textContent =
+    "Delivery Fee (" + getDeliveryName() + ")";
+  document.querySelector("#breakdown-fee").textContent = "$" + fee.toFixed(2);
 
-  document.getElementById("breakdown-total").textContent =
-    `$${finalTotal.toFixed(2)}`;
+  document.querySelector("#breakdown-total").textContent =
+    "$" + finalTotal.toFixed(2);
 
   // The discount row only shows while a promo code is applied.
-  document.getElementById("breakdown-discount-row").hidden =
-    appliedPromo === null;
-  if (appliedPromo !== null) {
-    document.getElementById("breakdown-discount-label").textContent =
-      `Discount (${appliedPromo.code})`;
-    document.getElementById("breakdown-discount").textContent =
-      `-$${discount.toFixed(2)}`;
-  }
-}
-renderFinalTotal();
-
-document
-  .querySelector(".method-options")
-  .addEventListener("change", renderFinalTotal);
-
-const promoForm = document.getElementById("promo-form");
-const promoInput = document.getElementById("promo-code");
-const promoMessage = document.getElementById("promo-message");
-
-function showPromoMessage(message, isError) {
-  promoMessage.textContent = message;
-  promoMessage.classList.toggle("is-error", isError);
-  promoMessage.hidden = false;
-
-  if (isError) {
-    promoInput.setAttribute("aria-invalid", "true");
+  const discountRow = document.querySelector("#breakdown-discount-row");
+  if (appliedPromo === null) {
+    discountRow.hidden = true;
   } else {
-    promoInput.removeAttribute("aria-invalid");
+    discountRow.hidden = false;
+    document.querySelector("#breakdown-discount-label").textContent =
+      "Discount (" + appliedPromo.code + ")";
+    document.querySelector("#breakdown-discount").textContent =
+      "-$" + discount.toFixed(2);
   }
 }
 
-promoForm.addEventListener("submit", function (event) {
+// ---------- Promo code ----------
+
+function findPromo(code) {
+  for (let i = 0; i < promoCodes.length; i++) {
+    if (promoCodes[i].code === code) {
+      return promoCodes[i];
+    }
+  }
+  return null;
+}
+
+function showPromoSuccess(message) {
+  promoMessage.textContent = message;
+  promoMessage.classList.remove("is-error");
+  promoMessage.hidden = false;
+  promoInput.removeAttribute("aria-invalid");
+}
+
+function showPromoError(message) {
+  promoMessage.textContent = message;
+  promoMessage.classList.add("is-error");
+  promoMessage.hidden = false;
+  promoInput.setAttribute("aria-invalid", "true");
+}
+
+function applyPromo(event) {
   event.preventDefault();
 
   const enteredCode = promoInput.value.trim().toUpperCase();
-  appliedPromo = promoCodes.find((promo) => promo.code === enteredCode) || null;
+  appliedPromo = findPromo(enteredCode);
   renderFinalTotal();
 
   if (enteredCode === "") {
-    showPromoMessage("Please enter a coupon code.", true);
+    showPromoError("Please enter a coupon code.");
   } else if (appliedPromo === null) {
-    showPromoMessage("That coupon code isn't valid.", true);
+    showPromoError("That coupon code isn't valid.");
   } else {
-    showPromoMessage(
-      `${appliedPromo.code} applied: ${appliedPromo.discountPercent}% off your items (-$${calculateDiscount().toFixed(2)}).`,
-      false,
+    showPromoSuccess(
+      appliedPromo.code +
+        " applied: " +
+        appliedPromo.discountPercent +
+        "% off your items (-$" +
+        calculateDiscount().toFixed(2) +
+        ").",
     );
   }
-});
+}
 
-// Clear an error as soon as the user starts fixing the code.
-promoInput.addEventListener("input", function () {
-  if (promoInput.hasAttribute("aria-invalid")) {
-    promoInput.removeAttribute("aria-invalid");
+// Removes the promo error as soon as the user starts fixing the code.
+function clearPromoError() {
+  if (promoMessage.classList.contains("is-error")) {
     promoMessage.hidden = true;
+    promoInput.removeAttribute("aria-invalid");
   }
-});
+}
 
-const form = document.getElementById("delivery-form");
-const formStatus = document.getElementById("form-status");
-const formCard = document.querySelector(".card-form");
-const card = document.querySelector(".card");
-const cash = document.querySelector(".cash");
-const cardMethod = document.querySelector(".card-method");
-const cashMethod = document.querySelector(".cash-method");
-const deliveryFields = [
-  { id: "full-name", message: "Please enter your full name." },
-  { id: "email", message: "Please enter a valid email address." },
-  { id: "phone", message: "Please enter a valid phone number." },
-  { id: "street-address", message: "Please enter your street address." },
-];
-const paymentFields = [
-  {
-    id: "cardnb",
-    message: "Enter a card number with 12 to 19 digits.",
-    isValid: (input) => /^\d{12,19}$/.test(input.value.replace(/\s/g, "")),
-  },
-  { id: "date", message: "Please enter a valid, unexpired card expiry date." },
-  { id: "cvv", message: "Enter a CVV with 3 or 4 digits." },
-];
+// ---------- Form errors ----------
 
-form.noValidate = true;
-formCard.noValidate = true;
+function showError(id, message) {
+  const input = document.querySelector("#" + id);
+  const error = document.querySelector("#" + id + "-error");
+  input.setAttribute("aria-invalid", "true");
+  error.textContent = message;
+  error.hidden = false;
+}
 
-const expiryInput = document.getElementById("date");
-const currentMonth = new Date();
-expiryInput.min = `${currentMonth.getFullYear()}-${String(
-  currentMonth.getMonth() + 1,
-).padStart(2, "0")}`;
+function hideError(id) {
+  const input = document.querySelector("#" + id);
+  const error = document.querySelector("#" + id + "-error");
+  input.removeAttribute("aria-invalid");
+  error.hidden = true;
+}
 
-function checkField(field) {
-  const input = document.getElementById(field.id);
-  const error = document.getElementById(field.id + "-error");
-
+// checkValidity() is built into the browser. It checks the rules written on
+// the input in the HTML, like required, type="email" and pattern.
+function checkField(id, message) {
+  const input = document.querySelector("#" + id);
   input.value = input.value.trim();
 
-  if (
-    input.checkValidity() &&
-    (!field.isValid || field.isValid(input))
-  ) {
-    input.removeAttribute("aria-invalid");
-    error.hidden = true;
+  if (input.checkValidity()) {
+    hideError(id);
     return true;
   }
-
-  input.setAttribute("aria-invalid", "true");
-  error.textContent = field.message;
-  error.hidden = false;
+  showError(id, message);
   return false;
 }
+
+function checkCardNumber() {
+  const input = document.querySelector("#cardnb");
+  input.value = input.value.trim();
+  const digits = input.value.replaceAll(" ", "");
+
+  if (input.checkValidity() && digits.length >= 12 && digits.length <= 19) {
+    hideError("cardnb");
+    return true;
+  }
+  showError("cardnb", "Enter a card number with 12 to 19 digits.");
+  return false;
+}
+
+// ---------- Place Order ----------
+
+function checkDeliveryFields() {
+  const nameOk = checkField("full-name", "Please enter your full name.");
+  const emailOk = checkField("email", "Please enter a valid email address.");
+  const phoneOk = checkField("phone", "Please enter a valid phone number.");
+  const addressOk = checkField(
+    "street-address",
+    "Please enter your street address.",
+  );
+  return nameOk && emailOk && phoneOk && addressOk;
+}
+
+function checkCardFields() {
+  const numberOk = checkCardNumber();
+  const dateOk = checkField(
+    "date",
+    "Please enter a valid, unexpired card expiry date.",
+  );
+  const cvvOk = checkField("cvv", "Enter a CVV with 3 or 4 digits.");
+  return numberOk && dateOk && cvvOk;
+}
+
+function showStatus(message, isError) {
+  formStatus.textContent = message;
+  if (isError) {
+    formStatus.classList.add("is-error");
+  } else {
+    formStatus.classList.remove("is-error");
+  }
+  formStatus.hidden = false;
+}
+
 function validate(event) {
   event.preventDefault();
   formStatus.hidden = true;
 
-  let formIsValid = true;
-  const fieldsToValidate = card.classList.contains("active")
-    ? [...deliveryFields, ...paymentFields]
-    : deliveryFields;
-  for (const field of fieldsToValidate) {
-    if (!checkField(field)) {
-      formIsValid = false;
-    }
+  let formIsValid = checkDeliveryFields();
+  if (paymentMethod === "card") {
+    const cardIsValid = checkCardFields();
+    formIsValid = formIsValid && cardIsValid;
   }
 
   if (!formIsValid) {
@@ -258,53 +322,84 @@ function validate(event) {
   }
 
   if (items.length === 0) {
-    formStatus.textContent =
-      "Your cart is empty. Add an item before placing your order.";
-    formStatus.classList.add("is-error");
-    formStatus.hidden = false;
+    showStatus("Your cart is empty. Add an item before placing your order.", true);
     return;
   }
 
-  formStatus.textContent =
-    "Everything looks good. Your order is ready to be placed.";
-  formStatus.classList.remove("is-error");
-  formStatus.hidden = false;
+  showStatus("Everything looks good. Your order is ready to be placed.", false);
 }
+
+// Removes a field's error as soon as the user types in it.
+function clearErrorWhenTyping(id) {
+  document.querySelector("#" + id).addEventListener("input", function () {
+    hideError(id);
+    formStatus.hidden = true;
+  });
+}
+
+// ---------- Card or cash ----------
+
+function clearCardErrors() {
+  hideError("cardnb");
+  hideError("date");
+  hideError("cvv");
+  formStatus.hidden = true;
+}
+
+function selectCard() {
+  paymentMethod = "card";
+  clearCardErrors();
+  cardMethod.style.display = "block";
+  cashMethod.style.display = "none";
+  card.classList.add("active");
+  cash.classList.remove("active");
+}
+
+function selectCash() {
+  paymentMethod = "cash";
+  clearCardErrors();
+  cardMethod.style.display = "none";
+  cashMethod.style.display = "block";
+  card.classList.remove("active");
+  cash.classList.add("active");
+}
+
+// The card expiry date can't be before this month. The input needs the
+// format "2026-11", so months below 10 get a 0 in front.
+function setEarliestExpiry() {
+  const today = new Date();
+  let month = today.getMonth() + 1;
+  if (month < 10) {
+    month = "0" + month;
+  }
+  document.querySelector("#date").min = today.getFullYear() + "-" + month;
+}
+
+// ---------- Listeners ----------
+
+standardRadio.addEventListener("change", renderFinalTotal);
+expressRadio.addEventListener("change", renderFinalTotal);
+
+promoForm.addEventListener("submit", applyPromo);
+promoInput.addEventListener("input", clearPromoError);
 
 form.addEventListener("submit", validate);
 formCard.addEventListener("submit", validate);
-function clearFieldErrors(event) {
-  const error = document.getElementById(event.target.id + "-error");
 
-  event.target.removeAttribute("aria-invalid");
-  formStatus.hidden = true;
-  if (error) {
-    error.hidden = true;
-  }
-}
-form.addEventListener("input", clearFieldErrors);
-formCard.addEventListener("input", clearFieldErrors);
+card.addEventListener("click", selectCard);
+cash.addEventListener("click", selectCash);
 
-function clearPaymentErrors() {
-  for (const field of paymentFields) {
-    document.getElementById(field.id).removeAttribute("aria-invalid");
-    document.getElementById(field.id + "-error").hidden = true;
-  }
-  formStatus.hidden = true;
-}
+clearErrorWhenTyping("full-name");
+clearErrorWhenTyping("email");
+clearErrorWhenTyping("phone");
+clearErrorWhenTyping("street-address");
+clearErrorWhenTyping("cardnb");
+clearErrorWhenTyping("date");
+clearErrorWhenTyping("cvv");
 
-card.addEventListener("click", function () {
-  clearPaymentErrors();
-  cardMethod.style.display = "block"; // Shows the div
-  cashMethod.style.display = "none";
-  cash.classList.remove("active");
-  card.classList.add("active");
-});
-cash.addEventListener("click", function () {
-  clearPaymentErrors();
-  cashMethod.style.display = "block"; // Shows the div
+// ---------- Run when the page opens ----------
 
-  cardMethod.style.display = "none";
-  cash.classList.add("active");
-  card.classList.remove("active");
-});
+renderSummary();
+renderOrders();
+renderFinalTotal();
+setEarliestExpiry();
