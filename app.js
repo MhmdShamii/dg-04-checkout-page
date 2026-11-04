@@ -194,8 +194,6 @@ const cash = document.querySelector(".cash");
 const cardMethod = document.querySelector(".card-method");
 const cashMethod = document.querySelector(".cash-method");
 const deliveryFields = [
-
-const fields = [
   { id: "full-name", message: "Please enter your full name." },
   { id: "email", message: "Please enter a valid email address." },
   { id: "phone", message: "Please enter a valid phone number." },
@@ -230,13 +228,6 @@ function checkField(field) {
     input.checkValidity() &&
     (!field.isValid || field.isValid(input))
   ) {
-function checkField(field) {
-  const input = document.getElementById(field.id);
-  const error = document.getElementById(field.id + "-error");
-
-  input.value = input.value.trim();
-
-  if (input.checkValidity()) {
     input.removeAttribute("aria-invalid");
     error.hidden = true;
     return true;
@@ -308,41 +299,6 @@ card.addEventListener("click", function () {
   cashMethod.style.display = "none";
   cash.classList.remove("active");
   card.classList.add("active");
-
-  input.setAttribute("aria-invalid", "true");
-  error.textContent = field.message;
-  error.hidden = false;
-  return false;
-}
-
-form.addEventListener("submit", function (event) {
-  event.preventDefault();
-  formStatus.hidden = true;
-
-  let formIsValid = true;
-  for (const field of fields) {
-    if (!checkField(field)) {
-      formIsValid = false;
-    }
-  }
-
-  if (!formIsValid) {
-    form.querySelector('[aria-invalid="true"]').focus();
-    return;
-  }
-
-  if (items.length === 0) {
-    formStatus.textContent =
-      "Your cart is empty. Add an item before placing your order.";
-    formStatus.classList.add("is-error");
-    formStatus.hidden = false;
-    return;
-  }
-
-  formStatus.textContent =
-    "Everything looks good. Your order is ready to be placed.";
-  formStatus.classList.remove("is-error");
-  formStatus.hidden = false;
 });
 cash.addEventListener("click", function () {
   clearPaymentErrors();
@@ -351,12 +307,4 @@ cash.addEventListener("click", function () {
   cardMethod.style.display = "none";
   cash.classList.add("active");
   card.classList.remove("active");
-form.addEventListener("input", function (event) {
-  const error = document.getElementById(event.target.id + "-error");
-
-  event.target.removeAttribute("aria-invalid");
-  formStatus.hidden = true;
-  if (error) {
-    error.hidden = true;
-  }
 });
