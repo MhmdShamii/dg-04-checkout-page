@@ -74,6 +74,12 @@ renderOrders();
 const form = document.getElementById("delivery-form");
 const formStatus = document.getElementById("form-status");
 
+const fields = [
+    { id: "full-name", message: "Please enter your full name." },
+    { id: "email", message: "Please enter a valid email address." },
+    { id: "phone", message: "Please enter a valid phone number." },
+    { id: "street-address", message: "Please enter your street address." }
+];
 
 form.noValidate = true;
 
