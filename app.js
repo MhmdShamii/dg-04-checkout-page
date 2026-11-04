@@ -31,6 +31,10 @@ const promoCodes = [
   { code: "VIP25", discountPercent: 25 },
 ];
 
+document.getElementById("back-button").addEventListener("click", function () {
+  history.back();
+});
+
 const result = document.querySelector(".order-items");
 const orderHeader = document.querySelector(".items-header");
 
