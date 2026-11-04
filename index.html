@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>checkout page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="app.js" defer></script>
@@ -17,6 +20,52 @@
         </div>
     </header>
     <section class="container">
+        <section class="delivery-info">
+            <div class="delivery-header">
+                <img src="./imgs/image.png" alt="" width="38" height="37">
+                <div>
+                    <h3>Delivery Information</h3>
+                    <p>Where should we deliver your order?</p>
+                </div>
+            </div>
+            <form class="delivery-form" id="delivery-form" method="post">
+                <div class="field">
+                    <label for="full-name">Full Name <span class="required-mark" aria-hidden="true">*</span></label>
+                    <input type="text" id="full-name" name="full_name" placeholder="Sarah Jenkins" autocomplete="name" aria-describedby="full-name-error" required>
+                    <p class="error-msg" id="full-name-error" hidden></p>
+                </div>
+                <div class="contact-info">
+                    <div class="field">
+                        <label for="email">Email Address <span class="required-mark" aria-hidden="true">*</span></label>
+                        <input type="email" id="email" name="email" placeholder="sarah@example.com" autocomplete="email" autocapitalize="off" spellcheck="false" aria-describedby="email-error" required>
+                        <p class="error-msg" id="email-error" hidden></p>
+                    </div>
+                    <div class="field">
+                        <label for="phone">Phone Number <span class="required-mark" aria-hidden="true">*</span></label>
+                        <input type="tel" id="phone" name="phone" placeholder="(555) 234-5678" autocomplete="tel" pattern="[0-9+\(\) \-]{7,20}" aria-describedby="phone-error" required>
+                        <p class="error-msg" id="phone-error" hidden></p>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="street-address">Street Address <span class="required-mark" aria-hidden="true">*</span></label>
+                    <input type="text" id="street-address" name="street_address" placeholder="742 Evergreen Terrace, Apt 4B" autocomplete="street-address" aria-describedby="street-address-error" required>
+                    <p class="error-msg" id="street-address-error" hidden></p>
+                </div>
+            </form>
+            <p class="form-status" id="form-status" role="status" hidden></p>
+        </section>
     </section>
+    <footer class="checkout-bar">
+        <div class="checkout-total">
+            <span class="checkout-total-label">Final Total</span>
+            <strong class="checkout-total-amount">$129.00</strong>
+        </div>
+        <button class="place-order" type="submit" form="delivery-form">
+            Place Order
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 12h16M14 6l6 6-6 6"/>
+            </svg>
+        </button>
+    </footer>
 </body>
 </html>
