@@ -275,7 +275,8 @@ header {
     outline-offset: 2px;
 }
 
-.delivery-method{
+.delivery-method,
+.promo-code{
     margin-block-start: 20px;
     padding: 20px 18px 18px;
     background-color: #fff;
@@ -385,6 +386,69 @@ header {
 
 .method-tag-indigo{
     color: #4338ca;
+}
+
+.promo-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-block-end: 12px;
+}
+
+.promo-title{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.promo-title svg{
+    flex-shrink: 0;
+    color: #4f46e5;
+}
+
+.promo-hint{
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: #4f46e5;
+}
+
+.promo-row{
+    display: flex;
+    gap: 10px;
+}
+
+.promo-row .field{
+    flex: 1;
+}
+
+.promo-apply{
+    flex-shrink: 0;
+    min-width: 78px;
+    min-height: 48px;
+    padding-inline: 16px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    background-color: #0f172a;
+    border: 0;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.promo-apply:hover{
+    background-color: #1e293b;
+}
+
+.promo-apply:focus-visible{
+    outline: 2px solid #0f172a;
+    outline-offset: 2px;
 }
 
 @media (max-width: 480px){

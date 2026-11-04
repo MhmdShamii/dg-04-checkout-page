@@ -23,6 +23,7 @@ const items = [
 ];
 
 const promoCodes = [
+  { code: "SAVE10", discountPercent: 10 },
   { code: "WELCOME10", discountPercent: 10 },
   { code: "SAVE15", discountPercent: 15 },
   { code: "SAVE20", discountPercent: 20 },
@@ -80,80 +81,142 @@ function renderOrders() {
 }
 renderOrders();
 
-function renderFinalTotal() {
-  const selectedMethod = document.querySelector('input[name="delivery_method"]:checked');
-  const finalTotal = Number(calculateTotal(items)) + Number(selectedMethod.dataset.fee);
+let appliedPromo = null;
 
-  document.querySelector(".checkout-total-amount").textContent = `$${finalTotal.toFixed(2)}`;
+function calculateDiscount() {
+  if (appliedPromo === null) {
+    return 0;
+  }
+  return (Number(calculateTotal(items)) * appliedPromo.discountPercent) / 100;
+}
+
+function renderFinalTotal() {
+  const selectedMethod = document.querySelector(
+    'input[name="delivery_method"]:checked',
+  );
+  const finalTotal =
+    Number(calculateTotal(items)) -
+    calculateDiscount() +
+    Number(selectedMethod.dataset.fee);
+
+  document.querySelector(".checkout-total-amount").textContent =
+    `$${finalTotal.toFixed(2)}`;
 }
 renderFinalTotal();
 
-document.querySelector(".method-options").addEventListener("change", renderFinalTotal);
+document
+  .querySelector(".method-options")
+  .addEventListener("change", renderFinalTotal);
+
+const promoForm = document.getElementById("promo-form");
+const promoInput = document.getElementById("promo-code");
+const promoMessage = document.getElementById("promo-message");
+
+function showPromoMessage(message, isError) {
+  promoMessage.textContent = message;
+  promoMessage.classList.toggle("is-error", isError);
+  promoMessage.hidden = false;
+
+  if (isError) {
+    promoInput.setAttribute("aria-invalid", "true");
+  } else {
+    promoInput.removeAttribute("aria-invalid");
+  }
+}
+
+promoForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const enteredCode = promoInput.value.trim().toUpperCase();
+  appliedPromo = promoCodes.find((promo) => promo.code === enteredCode) || null;
+  renderFinalTotal();
+
+  if (enteredCode === "") {
+    showPromoMessage("Please enter a coupon code.", true);
+  } else if (appliedPromo === null) {
+    showPromoMessage("That coupon code isn't valid.", true);
+  } else {
+    showPromoMessage(
+      `${appliedPromo.code} applied: ${appliedPromo.discountPercent}% off your items (-$${calculateDiscount().toFixed(2)}).`,
+      false,
+    );
+  }
+});
+
+// Clear an error as soon as the user starts fixing the code.
+promoInput.addEventListener("input", function () {
+  if (promoInput.hasAttribute("aria-invalid")) {
+    promoInput.removeAttribute("aria-invalid");
+    promoMessage.hidden = true;
+  }
+});
 
 const form = document.getElementById("delivery-form");
 const formStatus = document.getElementById("form-status");
 
 const fields = [
-    { id: "full-name", message: "Please enter your full name." },
-    { id: "email", message: "Please enter a valid email address." },
-    { id: "phone", message: "Please enter a valid phone number." },
-    { id: "street-address", message: "Please enter your street address." }
+  { id: "full-name", message: "Please enter your full name." },
+  { id: "email", message: "Please enter a valid email address." },
+  { id: "phone", message: "Please enter a valid phone number." },
+  { id: "street-address", message: "Please enter your street address." },
 ];
 
 form.noValidate = true;
 
 function checkField(field) {
-    const input = document.getElementById(field.id);
-    const error = document.getElementById(field.id + "-error");
+  const input = document.getElementById(field.id);
+  const error = document.getElementById(field.id + "-error");
 
-    input.value = input.value.trim();
+  input.value = input.value.trim();
 
-    if (input.checkValidity()) {
-        input.removeAttribute("aria-invalid");
-        error.hidden = true;
-        return true;
-    }
+  if (input.checkValidity()) {
+    input.removeAttribute("aria-invalid");
+    error.hidden = true;
+    return true;
+  }
 
-    input.setAttribute("aria-invalid", "true");
-    error.textContent = field.message;
-    error.hidden = false;
-    return false;
+  input.setAttribute("aria-invalid", "true");
+  error.textContent = field.message;
+  error.hidden = false;
+  return false;
 }
 
 form.addEventListener("submit", function (event) {
-    event.preventDefault();
-    formStatus.hidden = true;
+  event.preventDefault();
+  formStatus.hidden = true;
 
-    let formIsValid = true;
-    for (const field of fields) {
-        if (!checkField(field)) {
-            formIsValid = false;
-        }
+  let formIsValid = true;
+  for (const field of fields) {
+    if (!checkField(field)) {
+      formIsValid = false;
     }
+  }
 
-    if (!formIsValid) {
-        form.querySelector('[aria-invalid="true"]').focus();
-        return;
-    }
+  if (!formIsValid) {
+    form.querySelector('[aria-invalid="true"]').focus();
+    return;
+  }
 
-    if (items.length === 0) {
-        formStatus.textContent = "Your cart is empty. Add an item before placing your order.";
-        formStatus.classList.add("is-error");
-        formStatus.hidden = false;
-        return;
-    }
-
-    formStatus.textContent = "Everything looks good. Your order is ready to be placed.";
-    formStatus.classList.remove("is-error");
+  if (items.length === 0) {
+    formStatus.textContent =
+      "Your cart is empty. Add an item before placing your order.";
+    formStatus.classList.add("is-error");
     formStatus.hidden = false;
+    return;
+  }
+
+  formStatus.textContent =
+    "Everything looks good. Your order is ready to be placed.";
+  formStatus.classList.remove("is-error");
+  formStatus.hidden = false;
 });
 
 form.addEventListener("input", function (event) {
-    const error = document.getElementById(event.target.id + "-error");
+  const error = document.getElementById(event.target.id + "-error");
 
-    event.target.removeAttribute("aria-invalid");
-    formStatus.hidden = true;
-    if (error) {
-        error.hidden = true;
-    }
+  event.target.removeAttribute("aria-invalid");
+  formStatus.hidden = true;
+  if (error) {
+    error.hidden = true;
+  }
 });
