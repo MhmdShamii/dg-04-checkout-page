@@ -21,10 +21,12 @@
   </head>
   <body>
     <header>
-      <i class="fa-solid fa-arrow-left"></i>
+      <button class="back-button" id="back-button" type="button" aria-label="Go back">
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+      </button>
       <div>
         <h2>Order Checkout</h2>
-        <p>step 2 of 2 Fast & Secure</p>
+        <p>Step 2 of 2 &bull; Fast &amp; Secure</p>
       </div>
     </header>
     <section class="container">
@@ -183,12 +185,132 @@
             </div>
           </div>
         </div>
+      <section class="delivery-method">
+        <div class="delivery-header">
+          <span class="method-icon">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" />
+              <path d="M15 18H9" />
+              <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14" />
+              <circle cx="17" cy="18" r="2" />
+              <circle cx="7" cy="18" r="2" />
+            </svg>
+          </span>
+          <div>
+            <h3 id="delivery-method-title">Delivery Method</h3>
+            <p>Choose your shipping speed</p>
+          </div>
+        </div>
+        <fieldset class="method-options" aria-labelledby="delivery-method-title">
+          <label class="method-option">
+            <input
+              type="radio"
+              name="delivery_method"
+              value="standard"
+              data-fee="5"
+              form="delivery-form"
+              checked
+              required
+            />
+            <span class="method-top">
+              <span class="method-name">Standard</span>
+              <span class="method-price">$5.00</span>
+            </span>
+            <span class="method-time">3 - 5 business days</span>
+            <span class="method-tag method-tag-green">Economical</span>
+          </label>
+          <label class="method-option">
+            <input
+              type="radio"
+              name="delivery_method"
+              value="express"
+              data-fee="10"
+              form="delivery-form"
+            />
+            <span class="method-top">
+              <span class="method-name">Express</span>
+              <span class="method-price">$10.00</span>
+            </span>
+            <span class="method-time">1 - 2 business days</span>
+            <span class="method-tag method-tag-indigo">Priority Carrier</span>
+          </label>
+        </fieldset>
+      </section>
+      <section class="promo-code">
+        <div class="promo-header">
+          <label class="promo-title" for="promo-code">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" />
+              <circle cx="7.5" cy="7.5" r=".5" fill="currentColor" />
+            </svg>
+            Have a Promo Code?
+          </label>
+          <span class="promo-hint">Use: SAVE10</span>
+        </div>
+        <form class="promo-row" id="promo-form">
+          <div class="field">
+            <input
+              type="text"
+              id="promo-code"
+              name="promo_code"
+              placeholder="Enter coupon code"
+              autocomplete="off"
+              autocapitalize="characters"
+              spellcheck="false"
+              aria-describedby="promo-message"
+            />
+          </div>
+          <button class="promo-apply" type="submit">Apply</button>
+        </form>
+        <p class="form-status" id="promo-message" role="status" hidden></p>
+      </section>
+      <section class="payment-breakdown">
+        <h3>Payment Breakdown</h3>
+        <dl>
+          <div class="breakdown-row">
+            <dt id="breakdown-subtotal-label">Subtotal</dt>
+            <dd id="breakdown-subtotal"></dd>
+          </div>
+          <div class="breakdown-row" id="breakdown-discount-row" hidden>
+            <dt id="breakdown-discount-label">Discount</dt>
+            <dd id="breakdown-discount" class="breakdown-discount"></dd>
+          </div>
+          <div class="breakdown-row">
+            <dt id="breakdown-fee-label">Delivery Fee</dt>
+            <dd id="breakdown-fee"></dd>
+          </div>
+          <div class="breakdown-total">
+            <dt>Total Amount</dt>
+            <dd id="breakdown-total"></dd>
+          </div>
+        </dl>
+        <p class="breakdown-note">Includes all applicable taxes</p>
       </section>
     </section>
     <footer class="checkout-bar">
       <div class="checkout-total">
         <span class="checkout-total-label">Final Total</span>
-        <strong class="checkout-total-amount">$129.00</strong>
+        <strong class="checkout-total-amount" aria-live="polite">$0.00</strong>
       </div>
       <button class="place-order" type="submit" form="delivery-form">
         Place Order
