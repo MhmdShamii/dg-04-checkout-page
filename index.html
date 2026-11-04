@@ -213,6 +213,28 @@
         </form>
         <p class="form-status" id="promo-message" role="status" hidden></p>
       </section>
+      <section class="payment-breakdown">
+        <h3>Payment Breakdown</h3>
+        <dl>
+          <div class="breakdown-row">
+            <dt id="breakdown-subtotal-label">Subtotal</dt>
+            <dd id="breakdown-subtotal"></dd>
+          </div>
+          <div class="breakdown-row" id="breakdown-discount-row" hidden>
+            <dt id="breakdown-discount-label">Discount</dt>
+            <dd id="breakdown-discount" class="breakdown-discount"></dd>
+          </div>
+          <div class="breakdown-row">
+            <dt id="breakdown-fee-label">Delivery Fee</dt>
+            <dd id="breakdown-fee"></dd>
+          </div>
+          <div class="breakdown-total">
+            <dt>Total Amount</dt>
+            <dd id="breakdown-total"></dd>
+          </div>
+        </dl>
+        <p class="breakdown-note">Includes all applicable taxes</p>
+      </section>
     </section>
     <footer class="checkout-bar">
       <div class="checkout-total">

@@ -94,13 +94,48 @@ function renderFinalTotal() {
   const selectedMethod = document.querySelector(
     'input[name="delivery_method"]:checked',
   );
-  const finalTotal =
-    Number(calculateTotal(items)) -
-    calculateDiscount() +
-    Number(selectedMethod.dataset.fee);
+  const subtotal = Number(calculateTotal(items));
+  const discount = calculateDiscount();
+  const fee = Number(selectedMethod.dataset.fee);
+  const finalTotal = subtotal - discount + fee;
 
   document.querySelector(".checkout-total-amount").textContent =
     `$${finalTotal.toFixed(2)}`;
+
+  renderBreakdown(selectedMethod, subtotal, discount, fee, finalTotal);
+}
+
+function renderBreakdown(selectedMethod, subtotal, discount, fee, finalTotal) {
+  let itemCount = 0;
+  items.forEach((element) => {
+    itemCount += element.quantity;
+  });
+  const itemWord = itemCount === 1 ? "item" : "items";
+  const methodName = selectedMethod
+    .closest(".method-option")
+    .querySelector(".method-name").textContent;
+
+  document.getElementById("breakdown-subtotal-label").textContent =
+    `Subtotal (${itemCount} ${itemWord})`;
+  document.getElementById("breakdown-subtotal").textContent =
+    `$${subtotal.toFixed(2)}`;
+
+  document.getElementById("breakdown-fee-label").textContent =
+    `Delivery Fee (${methodName})`;
+  document.getElementById("breakdown-fee").textContent = `$${fee.toFixed(2)}`;
+
+  document.getElementById("breakdown-total").textContent =
+    `$${finalTotal.toFixed(2)}`;
+
+  // The discount row only shows while a promo code is applied.
+  document.getElementById("breakdown-discount-row").hidden =
+    appliedPromo === null;
+  if (appliedPromo !== null) {
+    document.getElementById("breakdown-discount-label").textContent =
+      `Discount (${appliedPromo.code})`;
+    document.getElementById("breakdown-discount").textContent =
+      `-$${discount.toFixed(2)}`;
+  }
 }
 renderFinalTotal();
 
