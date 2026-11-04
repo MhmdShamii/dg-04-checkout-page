@@ -21,7 +21,12 @@
   </head>
   <body>
     <header>
-      <button class="back-button" id="back-button" type="button" aria-label="Go back">
+      <button
+        class="back-button"
+        id="back-button"
+        type="button"
+        aria-label="Go back"
+      >
         <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
       </button>
       <div>
@@ -257,15 +262,24 @@
         <h3>Payment Breakdown</h3>
         <div class="breakdown-list">
           <div class="breakdown-row">
-            <span class="breakdown-label" id="breakdown-subtotal-label">Subtotal</span>
+            <span class="breakdown-label" id="breakdown-subtotal-label"
+              >Subtotal</span
+            >
             <span class="breakdown-value" id="breakdown-subtotal"></span>
           </div>
           <div class="breakdown-row" id="breakdown-discount-row" hidden>
-            <span class="breakdown-label" id="breakdown-discount-label">Discount</span>
-            <span id="breakdown-discount" class="breakdown-value breakdown-discount"></span>
+            <span class="breakdown-label" id="breakdown-discount-label"
+              >Discount</span
+            >
+            <span
+              id="breakdown-discount"
+              class="breakdown-value breakdown-discount"
+            ></span>
           </div>
           <div class="breakdown-row">
-            <span class="breakdown-label" id="breakdown-fee-label">Delivery Fee</span>
+            <span class="breakdown-label" id="breakdown-fee-label"
+              >Delivery Fee</span
+            >
             <span class="breakdown-value" id="breakdown-fee"></span>
           </div>
           <div class="breakdown-total">
@@ -275,6 +289,7 @@
         </div>
         <p class="breakdown-note">Includes all applicable taxes</p>
       </section>
+      <div class="receiptCard"></div>
     </section>
     <footer class="checkout-bar">
       <div class="checkout-total">

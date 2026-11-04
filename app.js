@@ -302,10 +302,22 @@ function showStatus(message, isError) {
     formStatus.classList.add("is-error");
   } else {
     formStatus.classList.remove("is-error");
+    receipt();
   }
   formStatus.hidden = false;
 }
-
+function receipt() {
+  const receipt = document.createElement("div");
+  const receiptCard = document.querySelector(".receiptCard");
+  receipt.className = "receipt";
+  receipt.innerHTML = `
+    <h2>Receipt</h2>
+    <p>Thank you for your order!</p>
+    <p>Total: ${document.querySelector(".checkout-total-amount").textContent}</p>
+    `;
+  receiptCard.appendChild(receipt);
+  receiptCard.classList.add("is-visible");
+}
 function validate(event) {
   event.preventDefault();
   formStatus.hidden = true;
@@ -322,7 +334,10 @@ function validate(event) {
   }
 
   if (items.length === 0) {
-    showStatus("Your cart is empty. Add an item before placing your order.", true);
+    showStatus(
+      "Your cart is empty. Add an item before placing your order.",
+      true,
+    );
     return;
   }
 
