@@ -48,7 +48,7 @@ renderSummary();
 function calculateTotal(items) {
   let total = 0;
   items.forEach((element) => {
-    total += element.price;
+    total += element.price * element.quantity;
   });
   return total.toFixed(2);
 }
@@ -70,6 +70,16 @@ function renderOrders() {
   });
 }
 renderOrders();
+
+function renderFinalTotal() {
+  const selectedMethod = document.querySelector('input[name="delivery_method"]:checked');
+  const finalTotal = Number(calculateTotal(items)) + Number(selectedMethod.dataset.fee);
+
+  document.querySelector(".checkout-total-amount").textContent = `$${finalTotal.toFixed(2)}`;
+}
+renderFinalTotal();
+
+document.querySelector(".method-options").addEventListener("change", renderFinalTotal);
 
 const form = document.getElementById("delivery-form");
 const formStatus = document.getElementById("form-status");

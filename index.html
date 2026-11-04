@@ -114,11 +114,72 @@
         </form>
         <p class="form-status" id="form-status" role="status" hidden></p>
       </section>
+      <section class="delivery-method">
+        <div class="delivery-header">
+          <span class="method-icon">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" />
+              <path d="M15 18H9" />
+              <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14" />
+              <circle cx="17" cy="18" r="2" />
+              <circle cx="7" cy="18" r="2" />
+            </svg>
+          </span>
+          <div>
+            <h3 id="delivery-method-title">Delivery Method</h3>
+            <p>Choose your shipping speed</p>
+          </div>
+        </div>
+        <fieldset class="method-options" aria-labelledby="delivery-method-title">
+          <label class="method-option">
+            <input
+              type="radio"
+              name="delivery_method"
+              value="standard"
+              data-fee="5"
+              form="delivery-form"
+              checked
+              required
+            />
+            <span class="method-top">
+              <span class="method-name">Standard</span>
+              <span class="method-price">$5.00</span>
+            </span>
+            <span class="method-time">3 - 5 business days</span>
+            <span class="method-tag method-tag-green">Economical</span>
+          </label>
+          <label class="method-option">
+            <input
+              type="radio"
+              name="delivery_method"
+              value="express"
+              data-fee="10"
+              form="delivery-form"
+            />
+            <span class="method-top">
+              <span class="method-name">Express</span>
+              <span class="method-price">$10.00</span>
+            </span>
+            <span class="method-time">1 - 2 business days</span>
+            <span class="method-tag method-tag-indigo">Priority Carrier</span>
+          </label>
+        </fieldset>
+      </section>
     </section>
     <footer class="checkout-bar">
       <div class="checkout-total">
         <span class="checkout-total-label">Final Total</span>
-        <strong class="checkout-total-amount">$129.00</strong>
+        <strong class="checkout-total-amount" aria-live="polite">$0.00</strong>
       </div>
       <button class="place-order" type="submit" form="delivery-form">
         Place Order
