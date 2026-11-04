@@ -21,6 +21,15 @@ const items = [
     color: "Navy Blue",
   },
 ];
+
+const promoCodes = [
+  { code: "WELCOME10", discountPercent: 10 },
+  { code: "SAVE15", discountPercent: 15 },
+  { code: "SAVE20", discountPercent: 20 },
+  { code: "HELLO5", discountPercent: 5 },
+  { code: "VIP25", discountPercent: 25 },
+];
+
 const result = document.querySelector(".order-items");
 const orderHeader = document.querySelector(".items-header");
 
