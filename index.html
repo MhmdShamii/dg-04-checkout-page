@@ -1,22 +1,312 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>checkout page</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    />
     <script src="app.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <i class="fa-solid fa-arrow-left"></i>
-        <div>
-            <h2>Order Checkout</h2>
-            <p>step 2 of 2 Fast & Secure</p>
-        </div>
+      <button
+        class="back-button"
+        id="back-button"
+        type="button"
+        aria-label="Go back"
+      >
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+      </button>
+      <div>
+        <h2>Order Checkout</h2>
+        <p>Step 2 of 2 &bull; Fast &amp; Secure</p>
+      </div>
     </header>
     <section class="container">
+      <section class="orders">
+        <div class="order-items">
+          <div class="items-header"></div>
+        </div>
+      </section>
+      <section class="delivery-info">
+        <div class="delivery-header">
+          <img src="./imgs/image.png" alt="" width="38" height="37" />
+          <div>
+            <h3>Delivery Information</h3>
+            <p>Where should we deliver your order?</p>
+          </div>
+        </div>
+        <form class="delivery-form" id="delivery-form" method="post" novalidate>
+          <div class="field">
+            <label for="full-name"
+              >Full Name
+              <span class="required-mark" aria-hidden="true">*</span></label
+            >
+            <input
+              type="text"
+              id="full-name"
+              name="full_name"
+              placeholder="Sarah Jenkins"
+              autocomplete="name"
+              aria-describedby="full-name-error"
+              required
+            />
+            <p class="error-msg" id="full-name-error" hidden></p>
+          </div>
+          <div class="contact-info">
+            <div class="field">
+              <label for="email"
+                >Email Address
+                <span class="required-mark" aria-hidden="true">*</span></label
+              >
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="sarah@example.com"
+                autocomplete="email"
+                autocapitalize="off"
+                spellcheck="false"
+                aria-describedby="email-error"
+                required
+              />
+              <p class="error-msg" id="email-error" hidden></p>
+            </div>
+            <div class="field">
+              <label for="phone"
+                >Phone Number
+                <span class="required-mark" aria-hidden="true">*</span></label
+              >
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="(555) 234-5678"
+                autocomplete="tel"
+                pattern="[0-9+\(\) \-]{7,20}"
+                aria-describedby="phone-error"
+                required
+              />
+              <p class="error-msg" id="phone-error" hidden></p>
+            </div>
+          </div>
+          <div class="field">
+            <label for="street-address"
+              >Street Address
+              <span class="required-mark" aria-hidden="true">*</span></label
+            >
+            <input
+              type="text"
+              id="street-address"
+              name="street_address"
+              placeholder="742 Evergreen Terrace, Apt 4B"
+              autocomplete="street-address"
+              aria-describedby="street-address-error"
+              required
+            />
+            <p class="error-msg" id="street-address-error" hidden></p>
+          </div>
+        </form>
+        <p class="form-status" id="form-status" role="status" hidden></p>
+      </section>
+
+      <section class="payment">
+        <div class="payment-option">
+          <div class="payment-header">
+            <h3>Payment Option</h3>
+            <p>Select dummy payment method</p>
+          </div>
+          <div class="payment-methods">
+            <div class="methods">
+              <h4 class="card active">Card(Simulated)</h4>
+              <h4 class="cash">Cash on Delivery</h4>
+            </div>
+            <div class="card-method">
+              <form class="card-form" novalidate>
+                <div class="card-nb">
+                  <label for="cardnb">Card Number</label>
+                  <input
+                    type="text"
+                    placeholder="4532 &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; 8921 "
+                    id="cardnb"
+                    name="card_number"
+                    inputmode="numeric"
+                    autocomplete="cc-number"
+                    pattern="[0-9 ]+"
+                    aria-describedby="cardnb-error"
+                    required
+                  />
+                  <p class="error-msg" id="cardnb-error" hidden></p>
+                </div>
+                <div class="card-info">
+                  <div class="card-field">
+                    <label for="date">Expiry Date</label>
+                    <input
+                      type="month"
+                      id="date"
+                      name="expiry_date"
+                      autocomplete="cc-exp"
+                      aria-describedby="date-error"
+                      required
+                    />
+                    <p class="error-msg" id="date-error" hidden></p>
+                  </div>
+                  <div class="card-field">
+                    <label for="cvv">CVV</label>
+                    <input
+                      type="text"
+                      placeholder="123"
+                      id="cvv"
+                      name="cvv"
+                      inputmode="numeric"
+                      autocomplete="cc-csc"
+                      pattern="[0-9]{3,4}"
+                      aria-describedby="cvv-error"
+                      required
+                    />
+                    <p class="error-msg" id="cvv-error" hidden></p>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="cash-method">
+              <h4>Pay upon arrival</h4>
+              <p>
+                Please prepare the exact cash total for our courier to ensure
+                quick and contact-safe handover.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="delivery-method">
+        <div class="delivery-header">
+          <span class="method-icon">
+            <i class="fa-solid fa-truck" aria-hidden="true"></i>
+          </span>
+          <div>
+            <h3>Delivery Method</h3>
+            <p>Choose your shipping speed</p>
+          </div>
+        </div>
+        <div class="method-options">
+          <label class="method-option">
+            <input
+              type="radio"
+              name="delivery_method"
+              id="standard-radio"
+              value="standard"
+              checked
+            />
+            <span class="method-top">
+              <span class="method-name">Standard</span>
+              <span class="method-price">$5.00</span>
+            </span>
+            <span class="method-time">3 - 5 business days</span>
+            <span class="method-tag method-tag-green">Economical</span>
+          </label>
+          <label class="method-option">
+            <input
+              type="radio"
+              name="delivery_method"
+              id="express-radio"
+              value="express"
+            />
+            <span class="method-top">
+              <span class="method-name">Express</span>
+              <span class="method-price">$10.00</span>
+            </span>
+            <span class="method-time">1 - 2 business days</span>
+            <span class="method-tag method-tag-indigo">Priority Carrier</span>
+          </label>
+        </div>
+      </section>
+      <section class="promo-code">
+        <div class="promo-header">
+          <label class="promo-title" for="promo-code">
+            <i class="fa-solid fa-tag" aria-hidden="true"></i>
+            Have a Promo Code?
+          </label>
+          <span class="promo-hint">Use: SAVE10</span>
+        </div>
+        <form class="promo-row" id="promo-form">
+          <div class="field">
+            <input
+              type="text"
+              id="promo-code"
+              name="promo_code"
+              placeholder="Enter coupon code"
+              autocomplete="off"
+              autocapitalize="characters"
+              spellcheck="false"
+              aria-describedby="promo-message"
+            />
+          </div>
+          <button class="promo-apply" type="submit">Apply</button>
+        </form>
+        <p class="form-status" id="promo-message" role="status" hidden></p>
+      </section>
+      <section class="payment-breakdown">
+        <h3>Payment Breakdown</h3>
+        <div class="breakdown-list">
+          <div class="breakdown-row">
+            <span class="breakdown-label" id="breakdown-subtotal-label"
+              >Subtotal</span
+            >
+            <span class="breakdown-value" id="breakdown-subtotal"></span>
+          </div>
+          <div class="breakdown-row" id="breakdown-discount-row" hidden>
+            <span class="breakdown-label" id="breakdown-discount-label"
+              >Discount</span
+            >
+            <span
+              id="breakdown-discount"
+              class="breakdown-value breakdown-discount"
+            ></span>
+          </div>
+          <div class="breakdown-row">
+            <span class="breakdown-label" id="breakdown-fee-label"
+              >Delivery Fee</span
+            >
+            <span class="breakdown-value" id="breakdown-fee"></span>
+          </div>
+          <div class="breakdown-total">
+            <span class="breakdown-label">Total Amount</span>
+            <span class="breakdown-value" id="breakdown-total"></span>
+          </div>
+        </div>
+        <p class="breakdown-note">Includes all applicable taxes</p>
+      </section>
+      <dialog class="receipt" id="receipt" aria-labelledby="receipt-title">
+        <h2 id="receipt-title">Receipt</h2>
+        <p>Thank you for your order!</p>
+        <p>Total: <span id="receipt-total"></span></p>
+        <form method="dialog">
+          <button class="receipt-close" autofocus>Close</button>
+        </form>
+      </dialog>
     </section>
-</body>
+    <footer class="checkout-bar">
+      <div class="checkout-total">
+        <span class="checkout-total-label">Final Total</span>
+        <strong class="checkout-total-amount" aria-live="polite">$0.00</strong>
+      </div>
+      <button class="place-order" type="submit" form="delivery-form">
+        Place Order
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </button>
+    </footer>
+  </body>
 </html>
