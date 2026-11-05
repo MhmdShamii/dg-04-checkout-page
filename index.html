@@ -289,7 +289,14 @@
         </div>
         <p class="breakdown-note">Includes all applicable taxes</p>
       </section>
-      <div class="receiptCard"></div>
+      <dialog class="receipt" id="receipt" aria-labelledby="receipt-title">
+        <h2 id="receipt-title">Receipt</h2>
+        <p>Thank you for your order!</p>
+        <p>Total: <span id="receipt-total"></span></p>
+        <form method="dialog">
+          <button class="receipt-close" autofocus>Close</button>
+        </form>
+      </dialog>
     </section>
     <footer class="checkout-bar">
       <div class="checkout-total">

@@ -307,16 +307,9 @@ function showStatus(message, isError) {
   formStatus.hidden = false;
 }
 function receipt() {
-  const receipt = document.createElement("div");
-  const receiptCard = document.querySelector(".receiptCard");
-  receipt.className = "receipt";
-  receipt.innerHTML = `
-    <h2>Receipt</h2>
-    <p>Thank you for your order!</p>
-    <p>Total: ${document.querySelector(".checkout-total-amount").textContent}</p>
-    `;
-  receiptCard.appendChild(receipt);
-  receiptCard.classList.add("is-visible");
+  document.querySelector("#receipt-total").textContent =
+    document.querySelector(".checkout-total-amount").textContent;
+  document.querySelector("#receipt").showModal();
 }
 function validate(event) {
   event.preventDefault();

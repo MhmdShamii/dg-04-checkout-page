@@ -725,29 +725,40 @@ header p {
     grid-template-columns: 1fr;
   }
 }
-.receiptCard {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  background-color: rgb(15 23 42 / 0.45);
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-}
-
-.receiptCard.is-visible {
-  display: flex;
-}
-
 .receipt {
+  /* The global reset removes the default auto margin that centers a dialog */
+  margin: auto;
   background: #ffffff;
-  width: min(100%, 360px);
+  width: min(100% - 40px, 360px);
+  border: 0;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgb(0 0 0 / 0.2);
   padding: 24px;
-  position: relative;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overscroll-behavior: contain;
+}
+
+.receipt::backdrop {
+  background-color: rgb(15 23 42 / 0.45);
   overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+.receipt-close {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 16px;
+  font: inherit;
+  font-weight: 700;
+  color: #fff;
+  background-color: #4f46e5;
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.receipt-close:focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 2px;
 }
